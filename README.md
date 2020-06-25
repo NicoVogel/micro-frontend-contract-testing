@@ -37,6 +37,10 @@ Each attribute of a custom element is an array.
 The array length equals the amount of times a custom element was created while recording.
 To access the information of one instance, use the same index.
 
+> `structures` only contains attributes which were present when first creating the custom element
+
+> `attributeChanges` contains all changes, but does not include starting values
+
 ## Whats next?
 
 To provide a similar experience as pact.io, there are a few thing missing.
