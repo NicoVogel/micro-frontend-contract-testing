@@ -1,0 +1,33 @@
+{
+  "name": "mocha-tdd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "build": "webpack",
+    "build:watch": "webpack --watch ./src/index.ts",
+    "build:ts": "tsc -b tsconfig.json",
+    "format": "npm run lint -- --fix",
+    "lint": "eslint src/** test/**",
+    "test": "mocha --require ts-node/register --extensions ts 'test/**/*.test.ts'",
+    "test:watch": "npm run test -- --watch --watch-files ./src/**/*.ts --watch-files ./test/**/*.ts",
+    "serve": "npx http-server static"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/assert": "^1.4.6",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.13.2",
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
+    "assert": "^2.0.0",
+    "eslint": "^6.8.0",
+    "mocha": "^7.1.1",
+    "ts-loader": "^7.0.5",
+    "ts-node": "^8.9.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12"
+  }
+}
