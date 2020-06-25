@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     [name: string]: {
       structures: AttributeStructure[];
       attributeChanges: AttributeChange[][];
-      eventListeners: Set<string>;
+      eventListeners: Set<string>[];
     };
   }
 
@@ -83,18 +83,23 @@ document.addEventListener("DOMContentLoaded", () => {
       {
         structures: [],
         attributeChanges: [],
-        eventListeners: new Set<string>()
+        eventListeners: []
       };
 
       customElements.define(element, class extends HTMLElement {
         constructor() {
           super();
         }
+        private eventListener: Set<string>;
         connectedCallback() {
           copyAttributes(this, currentElement.structures);
+
           const attributeChangesOfCurrentElement: AttributeChange[] = [];
           currentElement.attributeChanges.push(attributeChangesOfCurrentElement)
           observeAnyAttributeChange(this, attributeChangesOfCurrentElement);
+
+          this.eventListener = new Set<string>();
+          currentElement.eventListeners.push(this.eventListener)
         }
         addEventListener(
           type, listener, options
@@ -102,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
           super.addEventListener(
             type, listener, options
           );
-          currentElement.eventListeners.add(type);
+          this.eventListener.add(type);
         }
       })
     });
