@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", () => {
     structures: AttributeStructure[]) => {
 
     // getAttributeNames can contain duplicates
-    const structure = {};
+    const structure: AttributeStructure = {};
     new Set<string>(element.getAttributeNames())
       .forEach((name) => {
         structure[name] = element.getAttribute(name);
