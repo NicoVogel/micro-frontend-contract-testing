@@ -41,6 +41,8 @@ To access the information of one instance, use the same index.
 
 > `attributeChanges` contains all changes, but does not include starting values
 
+This blog post also shows the idea: https://medium.com/@goldhand/contract-testing-micro-frontends-1fa15a7b5650 
+
 ## Whats next?
 
 To provide a similar experience as pact.io, there are a few thing missing.
