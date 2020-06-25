@@ -1,68 +1,54 @@
-# This is a template for NodeJS TypeScript Mocha based TDD projects
+# Micro Frontends contract driven testing like pact.io
 
-This template provides:
+Currently this is only a proof of concept implementation.
 
-- a devcontainer for an consistent environment
-- linting via eslint
-- formatting via prettier
-- mocha test which are executed on save
+## The setup requirements
 
-## Repo Structure
+The micro frontend architecture needs to allow for an individaul client side loading of a micro frontend.
+This means that only one micro frontend is loaded.
 
-The intended structure:
+> Because the idea behind contract driven testing is to test each micro frontend in isolation.
 
-````
-src/ 
-  - foo.ts
-  - <code>
+## The idea
 
-test/
-  - foo.test.ts
-  - <tests>
+The code in `src/index.ts` will provide a dummy implementation for each custom element which is not defined when running this code.
+The dummy implementation records any attribute changes and event listeners which are added.
+The recorded information is accassible at `window.recording`
 
-dist/
-  - foo.js
-  - <compiled js>
-````
+```js
+interface AttributeStructure {
+  [attributeName: string]: string;
+}
+interface AttributeChange {
+  attributeName: string;
+  newValue: string;
+}
+interface CustomElementsRecordings {
+  [customElementName: string]: {
+    structures: AttributeStructure[];
+    attributeChanges: AttributeChange[][];
+    eventListeners: Set<string>[];
+  };
+}
+```
 
-## Enable autorun
+The object structure of `window.recording` corresponds to the interface `CustomElementsRecordings`.
+Each attribute of a custom element is an array.
+The array lengh equals the amount of times a custom element was created while recording.
+To access the information of one instance use the same index.
 
-- Open the vs code tab `test`
-- Click on `...`
-- Select `Enable autorun`
+## Whats next?
 
-## Conventions
+To provide a simimlar experience as pact.io, there are a few thing missing.
+Currently only the consumer is mocked.
 
-### Names
+- create a mock for producer
+- create freature to allow for replay of recordings
+- enable automisation of etherything
+- create a centralized server where recordings can be stored
 
-Be explicit!
-Do not use add words like `manager` to a class name if not realy needed. 
-Bad example: [1]
-![The world seen by an "Object-Oriented" programmer](https://i.redd.it/rj8raf1riyny.png) 
+All of these ideas simply represent what pact.io offers on the microservice server side.
 
-Try to use `get` and `set` as less as possible, because they do not add meaning. [1]
+## Template for this repository
 
-Generell
-
-### Structure
-
-Do not bypass the encapsularion layer, becuase otherwise the meaning of an object is lost. [1]
-
-Use `undefined` instead of `null` whenever possible. [2]
-
-## Setup origin
-
-This setup originates from the following sources:
-
-- [1] [ITT 2016 - Kevlin Henney - Seven Ineffective Coding Habits of Many Programmers](https://www.youtube.com/watch?v=ZsHMHukIlJY)
-  - formating
-  - naming convention
-  - structutal convention
-- [2] [The Post JavaScript Apocalypse - Douglas Crockford](https://www.youtube.com/watch?v=99Zacm7SsWQ)
-  - formatting
-  - structutal convention
-- [3] [Software Art Thou: Kevlin Henney - What Do You Mean](https://www.youtube.com/watch?v=5cafjDPPtJ0)
-  - naming convention
-  - structutal convention
-- [4] [DevTernity 2017: Ian Cooper - TDD, Where Did It All Go Wrong](https://www.youtube.com/watch?v=EZ05e7EMOLM)
-- [5] [Functional architecture - The pits of success - Mark Seemann](https://www.youtube.com/watch?v=US8QG9I1XW0)
+I used the template [node-typescript-mocha](https://github.com/NicoVogel/node-typescript-mocha) as basis.
