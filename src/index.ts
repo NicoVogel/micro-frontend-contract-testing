@@ -29,14 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   interface AttributeStructure {
-    [name: string]: string;
+    [attributeName: string]: string;
   }
   interface AttributeChange {
     attributeName: string;
     newValue: string;
   }
   interface CustomElementsRecordings {
-    [name: string]: {
+    [customElementName: string]: {
       structures: AttributeStructure[];
       attributeChanges: AttributeChange[][];
       eventListeners: Set<string>[];
