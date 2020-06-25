@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // getAttributeNames can contain duplicates
     const structure = {};
-    Array.from(new Set<string>(element.getAttributeNames()))
+    new Set<string>(element.getAttributeNames())
       .forEach((name) => {
         structure[name] = element.getAttribute(name);
       });
