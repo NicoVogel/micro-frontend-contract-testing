@@ -1,3 +1,4 @@
+import { getUndefinedCustomElements } from "./helper";
 import {
   AttributeChange,
   AttributeStructure, CustomElementsRecording, CustomElementsRecordings
@@ -10,25 +11,9 @@ const getUniqueCustomElements = (elements: HTMLCollectionOf<Element>) =>
     // '-' is a naming requirement to identify custom elements
     .filter((name: string) => name.includes("-")));
 
-const getAllUndefinedCustomElements = async () => {
-  const uniqueElements = getUniqueCustomElements(getAllElements());
-  const definedElements = [];
-  uniqueElements.forEach((value) => {
-    customElements.whenDefined(value)
-      .then(() => {
-        // this is a micro task which is executed after the current task 
-        definedElements.push(value);
-      });
-  });
-  return new Promise<string[]>((resolve) => {
-    // this queues another micro task which is executed after 
-    // all the previously defined micro tasks
-    queueMicrotask(() => {
-      resolve(Array.from(uniqueElements)
-        .filter((value) => !definedElements.includes(value)));
-    });
-  });
-};
+const getAllUndefinedCustomElements = async () => 
+  await getUndefinedCustomElements(getUniqueCustomElements(getAllElements()));
+
 
 const copyAttributes = (element: HTMLElement,
   structure: AttributeStructure) => {
