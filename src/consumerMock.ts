@@ -19,16 +19,16 @@ const getAllUndefinedCustomElements = async () => {
         // this is a micro task which is executed after the current task 
         definedElements.push(value);
       });
-  })
+  });
   return new Promise<string[]>((resolve) => {
     // this queues another micro task which is executed after 
     // all the previously defined micro tasks
     queueMicrotask(() => {
       resolve(Array.from(uniqueElements)
-        .filter((value) => !definedElements.includes(value)))
+        .filter((value) => !definedElements.includes(value)));
     });
   });
-}
+};
 
 const copyAttributes = (element: HTMLElement,
   structure: AttributeStructure) => {
@@ -38,7 +38,7 @@ const copyAttributes = (element: HTMLElement,
     .forEach((name) => {
       structure[name] = element.getAttribute(name);
     });
-}
+};
 
 const observeAnyAttributeChange = (Element: HTMLElement,
   attributeChanges: AttributeChange[]) => {
@@ -52,12 +52,12 @@ const observeAnyAttributeChange = (Element: HTMLElement,
           .getAttribute(mutation.attributeName);
         attributeChanges.push({
           attributeName: mutation.attributeName, newValue: newVal
-        })
+        });
       }
     });
   });
   observer.observe(Element, { attributes: true });
-}
+};
 
 const getStructureOfUndefinedCustomElements = async () => {
   const undefinedCustomElements = await getAllUndefinedCustomElements();
@@ -76,7 +76,7 @@ const getStructureOfUndefinedCustomElements = async () => {
           structures:{},
           attributeChanges: [],
           eventListeners: new Set<string>()
-        }
+        };
         currentElementRecordings.push(instanceRecording);
 
         copyAttributes(this, instanceRecording.structures);
@@ -91,21 +91,21 @@ const getStructureOfUndefinedCustomElements = async () => {
         );
         this.eventListener.add(type);
       }
-    })
+    });
   });
   return elementRecordings;
-}
+};
 
 export const initConsumerMocks = async () => {
   return new Promise<CustomElementsRecordings>((resolve) => {
     document.addEventListener("DOMContentLoaded", () => {
       (async () => {
-        const val = "recording"
+        const val = "recording";
         const recordings =
           window[val] =
           await getStructureOfUndefinedCustomElements();
         resolve(recordings);
-      })()
-    })
-  })
-}
+      })();
+    });
+  });
+};
