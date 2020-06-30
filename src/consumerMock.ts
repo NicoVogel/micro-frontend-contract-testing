@@ -1,4 +1,7 @@
-import { AttributeStructure, AttributeChange, CustomElementsRecordings } from "./models";
+import {
+  AttributeChange,
+  AttributeStructure, CustomElementsRecordings
+} from "./models";
 
 const getAllElements = () => document.body.getElementsByTagName("*");
 const getUniqueCustomElements = (elements: HTMLCollectionOf<Element>) =>
@@ -42,7 +45,8 @@ const copyAttributes = (element: HTMLElement,
 const observeAnyAttributeChange = (Element: HTMLElement,
   attributeChanges: AttributeChange[]) => {
 
-  // origin: https://github.com/w3c/webcomponents/issues/565#issuecomment-345556883
+  // origin: 
+  // https://github.com/w3c/webcomponents/issues/565#issuecomment-345556883
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.type === "attributes") {
@@ -98,11 +102,13 @@ const getStructureOfUndefinedCustomElements = async () => {
 }
 
 export const initConsumerMocks = async () => {
-  return new Promise<CustomElementsRecordings>((resolve, reject) => {
+  return new Promise<CustomElementsRecordings>((resolve) => {
     document.addEventListener("DOMContentLoaded", () => {
       (async () => {
         const val = "recording"
-        const recordings = window[val] = await getStructureOfUndefinedCustomElements();
+        const recordings =
+          window[val] =
+          await getStructureOfUndefinedCustomElements();
         resolve(recordings);
       })()
     })
