@@ -1,6 +1,6 @@
-import { initConsumerMocks } from "./consumerMock"
+import { initConsumerMocks } from "./consumerMock";
 
 initConsumerMocks()
   .then((recordings) => {
-    console.log(recordings)
-  })
+    console.log(recordings);
+  });
