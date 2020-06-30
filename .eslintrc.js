@@ -9,6 +9,7 @@ module.exports = {
       ImportDeclaration: 1,
       SwitchCase: 1
     }],
+    semi: [2, "always"],
     "function-paren-newline": [2, { "minItems": 3 }],
     quotes: [2, "double"],
     "no-var": 2,
