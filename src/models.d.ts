@@ -15,3 +15,8 @@ export interface CustomElementsRecording {
 export interface CustomElementsRecordings {
   [customElementName: string]: CustomElementsRecording[];
 }
+
+export interface EmittedEvent {
+  type: string;
+  detail: unknown;
+}
