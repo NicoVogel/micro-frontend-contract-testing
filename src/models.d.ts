@@ -20,3 +20,7 @@ export interface EmittedEvent {
   type: string;
   detail: unknown;
 }
+
+export interface EmittedEvents{
+  [customElementName: string]: EmittedEvent[][];
+}
