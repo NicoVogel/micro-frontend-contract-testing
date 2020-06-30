@@ -1,6 +1,6 @@
 import {
   AttributeChange,
-  AttributeStructure, CustomElementsRecordings
+  AttributeStructure, CustomElementsRecording, CustomElementsRecordings
 } from "./models";
 
 const getAllElements = () => document.body.getElementsByTagName("*");
@@ -31,15 +31,13 @@ const getAllUndefinedCustomElements = async () => {
 }
 
 const copyAttributes = (element: HTMLElement,
-  structures: AttributeStructure[]) => {
+  structure: AttributeStructure) => {
 
   // getAttributeNames can contain duplicates
-  const structure: AttributeStructure = {};
   new Set<string>(element.getAttributeNames())
     .forEach((name) => {
       structure[name] = element.getAttribute(name);
     });
-  structures.push(structure);
 }
 
 const observeAnyAttributeChange = (Element: HTMLElement,
@@ -63,30 +61,27 @@ const observeAnyAttributeChange = (Element: HTMLElement,
 
 const getStructureOfUndefinedCustomElements = async () => {
   const undefinedCustomElements = await getAllUndefinedCustomElements();
-  const elementsStructure: CustomElementsRecordings = {};
+  const elementRecordings: CustomElementsRecordings = {};
 
-  undefinedCustomElements.forEach((element) => {
-    const currentElement = elementsStructure[element] =
-    {
-      structures: [],
-      attributeChanges: [],
-      eventListeners: []
-    };
+  undefinedCustomElements.forEach((elementName) => {
+    const currentElementRecordings = elementRecordings[elementName] = [];
 
-    customElements.define(element, class extends HTMLElement {
+    customElements.define(elementName, class extends HTMLElement {
       constructor() {
         super();
       }
       private eventListener: Set<string>;
       connectedCallback() {
-        copyAttributes(this, currentElement.structures);
+        const instanceRecording: CustomElementsRecording = {
+          structures:{},
+          attributeChanges: [],
+          eventListeners: new Set<string>()
+        }
+        currentElementRecordings.push(instanceRecording);
 
-        const attributeChangesOfCurrentElement: AttributeChange[] = [];
-        currentElement.attributeChanges.push(attributeChangesOfCurrentElement)
-        observeAnyAttributeChange(this, attributeChangesOfCurrentElement);
-
-        this.eventListener = new Set<string>();
-        currentElement.eventListeners.push(this.eventListener)
+        copyAttributes(this, instanceRecording.structures);
+        observeAnyAttributeChange(this, instanceRecording.attributeChanges);
+        this.eventListener = instanceRecording.eventListeners;
       }
       addEventListener(
         type, listener, options
@@ -98,7 +93,7 @@ const getStructureOfUndefinedCustomElements = async () => {
       }
     })
   });
-  return elementsStructure;
+  return elementRecordings;
 }
 
 export const initConsumerMocks = async () => {

@@ -5,10 +5,13 @@ export interface AttributeChange {
   attributeName: string;
   newValue: string;
 }
+
+export interface CustomElementsRecording {
+  structures: AttributeStructure;
+  attributeChanges: AttributeChange[];
+  eventListeners: Set<string>;
+}
+
 export interface CustomElementsRecordings {
-  [customElementName: string]: {
-    structures: AttributeStructure[];
-    attributeChanges: AttributeChange[][];
-    eventListeners: Set<string>[];
-  };
+  [customElementName: string]: CustomElementsRecording[];
 }
